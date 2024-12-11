@@ -162,7 +162,7 @@ cython_debug/
 .idea/
 # Файлы бд, результатов и селери не надо выгружать
 tasks.db
-Parsing results/
+Parsing results/*
 !Parsing results/.gitkeep
-CeleryDb/
+CeleryDb/*
 !CeleryDb/.gitkeep
