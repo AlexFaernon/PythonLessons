@@ -22,6 +22,7 @@
 2. Ставим зависимости `pip install -r requirements.txt`
 ### 3. Запускаем Celery
 Фигачим в терминал  `celery -A parser_processer.celeryApp worker --loglevel=info --pool=solo --statedb=CeleryDb/worker.state`, где
+   - `parser_processer.celeryApp` - `имя_файла:переменная_celery`
    - `--pool=solo` нужно чтобы это запустилось на винде, потому что там какая-то беда с потоками
    - `--statedb=CeleryDb/worker.state` путь куда сельдерей будет сохранять свои штуки, например задачи помеченные на удаление. Мы же не хотим, чтобы после перезапуска он все забыл?
 ### 4. Поднимаем веб-интерфейс...
