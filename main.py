@@ -52,7 +52,6 @@ def main_page() -> list[AnyComponent]:
             components=[
                 c.Heading(text="Расписание парсеров", level=1),
                 c.Div(components=[c.Button(text="Добавить задачу в очередь", on_click=PageEvent(name='new-task'))]),
-                c.Text(text=str(datetime.now())),
                 c.Table(
                     data_model=Task,
                     data=tasks,
@@ -119,7 +118,7 @@ def run_task_now(task_id: str):
 
 
 @fast_api_app.get("/api/task/{task_id}", response_model=FastUI, response_model_exclude_none=True)
-def get_modal_content(task_id: str) -> list[AnyComponent]:
+def get_task_page(task_id: str) -> list[AnyComponent]:
     task = get_task(task_id)
     if task is None:
         raise HTTPException(status_code=404, detail="Task not found")
@@ -140,7 +139,8 @@ def get_modal_content(task_id: str) -> list[AnyComponent]:
                 submit_trigger=PageEvent(name='run-task-now'),
                 footer=[]
             ),
-            c.Div(components=[c.Button(text='Отменить задачу', named_style='warning', on_click=PageEvent(name='delete-task'))]),
+            c.Div(components=[
+                c.Button(text='Отменить задачу', named_style='warning', on_click=PageEvent(name='delete-task'))]),
             c.Form(
                 form_fields=[c.FormFieldInput(name='task', title='', initial=task_id, html_type='hidden')],
                 submit_url=f'/api/cancel/{task_id}',
@@ -150,11 +150,9 @@ def get_modal_content(task_id: str) -> list[AnyComponent]:
         ]
     else:
         if task.result != 'Результат не найден':
-            style = 'warning' if task.status == db.TaskStatus.ERROR_TASK.value else 'primary'
             text = 'Скачать файл ошибки' if task.status == db.TaskStatus.ERROR_TASK.value else 'Скачать результат'
-            # body += [c.Button(text=text, named_style=style,
-            #                   on_click=GoToEvent(url=f'/download/{task_id}', target='_blank'))]
-            body += [c.Link(components=[c.Text(text='download')], on_click=GoToEvent(url=f'/download/{task_id}', target='_blank'))]
+            body += [c.Link(components=[
+                c.Text(text=text)], on_click=GoToEvent(url=f'/api/download/{task_id}', target='_blank'))]
         else:
             body += [c.Paragraph(text='Файл не найден!')]
 
