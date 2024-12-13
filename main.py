@@ -38,7 +38,7 @@ for parser_name in parsers.keys():
 
 class SelectParser(BaseModel):
     name: str = Field(title='Название')
-    description: str = Field('Описание')
+    description: str = Field(title='Описание')
     parsers_enum: ParserNames = Field(title="Доступные парсеры")
     eta: datetime = Field(title="Дата запуска")
 
