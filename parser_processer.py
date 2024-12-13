@@ -8,7 +8,7 @@ from celery import Celery
 from data_base import add_task, update_task_status, delete_task, TaskStatus, PARSING_RESULTS
 
 PARSERS_FOLDER = 'Parsers'
-celeryApp = Celery("myapp", broker='redis://localhost:32769/0', backend='redis://localhost:32769/0')
+celeryApp = Celery("myapp", broker='redis://localhost:32768/0', backend='redis://localhost:32768/0')
 parsers = {parser: import_module(f"Parsers.{parser}") for parser in [file.removesuffix('.py')
                                                                      for file in listdir(PARSERS_FOLDER)
                                                                      if file.endswith(".py")]}
